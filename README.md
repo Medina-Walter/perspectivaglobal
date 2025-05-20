@@ -11,5 +11,3 @@
 - Como usuario, quiero un sistema de registro, para registrarme con nombre, apellido, usuario, correo y contraseña y un sistema de login, en que pueda iniciar sesión con mi correo y contraseña.
 - Como lector, quiero una paginación de los artículos con un maximo de 4 artículos por pagína. \*
 
-
-

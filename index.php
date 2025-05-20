@@ -8,22 +8,22 @@ $pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 $offset = ($pagina - 1) * $por_pagina;
 
   if ($categoria) {
-    $stmt = $pdo->prepare('SELECT * FROM post WHERE categoría = ? ORDER BY fecha DESC LIMIT ? OFFSET ?');
+    $stmt = $pdo->prepare('SELECT * FROM posts WHERE categoria = ? ORDER BY fecha DESC LIMIT ? OFFSET ?');
     $stmt->bindParam(1, $categoria);
     $stmt->bindParam(2, $por_pagina, PDO::PARAM_INT);
     $stmt->bindParam(3, $offset, PDO::PARAM_INT);
     $stmt->execute();
 
     // Para contar total de resultados
-    $total_stmt = $pdo->prepare('SELECT COUNT(*) FROM post WHERE categoría = ?');
+    $total_stmt = $pdo->prepare('SELECT COUNT(*) FROM posts WHERE categoria = ?');
     $total_stmt->execute([$categoria]);
   } else {
-    $stmt = $pdo->prepare('SELECT * FROM post ORDER BY fecha DESC LIMIT ? OFFSET ?');
+    $stmt = $pdo->prepare('SELECT * FROM posts ORDER BY fecha DESC LIMIT ? OFFSET ?');
     $stmt->bindParam(1, $por_pagina, PDO::PARAM_INT);
     $stmt->bindParam(2, $offset, PDO::PARAM_INT);
     $stmt->execute();
 
-    $total_stmt = $pdo->query('SELECT COUNT(*) FROM post');
+    $total_stmt = $pdo->query('SELECT COUNT(*) FROM posts');
   }
 
 $posts = $stmt->fetchAll();
@@ -56,9 +56,9 @@ $total_paginas = ceil($total_resultados / $por_pagina);
               <?php if (!empty($post['imagen'])): ?>
                 <img src="img/<?= htmlspecialchars($post['imagen']); ?>" class="card-img-top" alt="Imagen del artículo">
                 <?php endif; ?>
-                <h2 class="card-title"><?= htmlspecialchars($post['título']); ?></h2>
+                <h2 class="card-title"><?= htmlspecialchars($post['titulo']); ?></h2>
                 <time class="text-muted"><?= date('d/m/Y', strtotime($post['fecha'])); ?></time>
-                <p class="card-text mt-2"><?= substr(htmlspecialchars($post['contenido']), 0, 150); ?>...</p>
+                <p class="card-text "><?= substr(htmlspecialchars($post['contenido']), 0, 150); ?>...</p>
                 <a href="post.php?id_post=<?= $post['id_post']; ?>" class="btn btn-primary">Leer más</a>
               </div>
             </article>
