@@ -1,4 +1,9 @@
 <?php
+session_start();
+  if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] !== true) {
+    header('Location: registro.php');
+    exit;
+  }
 require 'db.php';
 
 // Consulta para obtener un post específico
@@ -26,24 +31,16 @@ if (!$post) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($post['titulo']); ?> - Mi Blog</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Asegurar que el texto se ajuste y no desborde */
-        .post-content {
-            word-break: break-word; /* Divide palabras largas */
-            overflow-wrap: break-word; /* Asegura que el texto se ajuste al contenedor */
-            white-space: normal; /* Permite saltos de línea naturales */
-        }
-        .card-body {
-            overflow: auto; /* Agrega scroll si el contenido es muy largo */
-        }
-    </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
     <?php include("include/menu.php"); menu(); ?>
-
-    <main class="container my-5">
+    <main class="container my-3">
+        <a href="index.php" class="my-3 btn btn-primary">Volver</a>
       <div class="card shadow-sm">
         <div class="card-body overflow-visible">
+            <?php if (!empty($post['imagen'])): ?>
+                <img src="img/<?= htmlspecialchars($post['imagen']);?>" class="card-img-top" alt="Imagen del artículo">
+            <?php endif; ?>
          <h2 class="card-title mb-3"><?= htmlspecialchars($post['titulo']); ?></h2>
          <time class="text-muted d-block mb-3"><?= date('d/m/Y', strtotime($post['fecha'])); ?></time>
           <div class="mb-4 text-wrap overflow-visible">
@@ -54,14 +51,17 @@ if (!$post) {
 
         <!-- FORMULARIO DE COMENTARIO -->
         <section class="container mt-5">
-            <h4>Dejá un comentario</h4>
-            <form method="POST" action="guardar_comentario.php">
-                <input type="hidden" name="post_id" value="<?= $post['id_post']; ?>">
+           <h4>Dejá un comentario</h4>
+           <form method="POST" action="guardar_comentario.php">
+             <input type="hidden" name="post_id" value="<?= $post['id_post']; ?>">
                 <div class="mb-3">
-                    <label for="contenido" class="form-label">Comentario</label>
-                    <textarea name="contenido" id="contenido" rows="4" class="form-control" placeholder="Escribí tu comentario aquí…" required></textarea>
+                 <label for="contenido" class="form-label">Comentario</label>
+                 <textarea name="contenido" id="contenido" rows="4" class="form-control" placeholder="Escribí tu comentario aquí…" required></textarea>
                 </div>
-                <button type="submit" name="guardar_comentario" class="btn btn-primary">Publicar Comentario</button>
+             <button type="submit" name="guardar_comentario" class="btn btn-primary" <?php echo (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] !== true) ? 'disabled' : ''; ?>>Publicar Comentario</button>
+                <?php if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] !== true): ?>
+                <p class="text-muted mt-2">Debes <a href="login.php">Registrarte</a> para publicar un comentario.</p>
+                 <?php endif; ?>
             </form>
         </section>
 

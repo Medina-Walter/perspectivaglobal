@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($usuario && password_verify($clave, $usuario['clave'])) {
         // Iniciar sesión y almacenar datos
+        $_SESSION['autenticado'] = true;
         $_SESSION['id_usuario'] = $usuario['id_usuario'];
         $_SESSION['usuario'] = $usuario['usuario'];
 

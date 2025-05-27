@@ -1,3 +1,11 @@
+
+<?php
+session_start();
+  if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] !== true) {
+    header('Location: registro.php');
+    exit;
+  }
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -49,7 +57,6 @@
                 <input type="file" class="form-control" name="imagen" id="imagen" accept="image/*">
               </div>
                             
-
               <!-- Botón -->
               <div class="d-grid">
                 <button type="submit" class="btn text-white" style="background-color: #F37E00;">Publicar Artículo</button>

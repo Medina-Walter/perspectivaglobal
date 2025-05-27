@@ -21,7 +21,7 @@
             <h3 class="mb-0">Registro de Usuario</h3>
           </div>
           <div class="card-body">
-            <form action="guardar_usuario.php" method="POST" class="">
+            <form action="guardar_usuario.php" method="POST">
               <div class="mb-3">
                 <label for="nombre" class="form-label">Nombre</label>
                 <input type="text" name="nombre" id="nombre" class="form-control" required />

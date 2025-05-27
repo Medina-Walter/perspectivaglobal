@@ -20,16 +20,5 @@ try {
 /* Estructura de la base de datos:
 CREATE DATABASE blog_simple;
 USE blog_simple;
-
-CREATE TABLE posts (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    titulo VARCHAR(100) NOT NULL,
-    contenido TEXT NOT NULL,
-    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-INSERT INTO posts (titulo, contenido) VALUES
-('Primer artículo', 'Contenido del primer artículo de blog'),
-('Segundo artículo', 'Contenido del segundo artículo de blog');
 */
 ?>

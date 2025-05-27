@@ -4,13 +4,11 @@ session_start();
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
 <body class="bg-light">
     <?php include("include/menu.php");
     menu(); ?>
@@ -30,14 +28,14 @@ session_start();
                             </div>
                         <?php unset($_SESSION['error_login']); ?>
                         <?php  endif; ?>
-                        <form action="procesar_login.php" method="POST">
+                        <form action="validar_login.php" method="POST">
                             <div class="mb-3">
-                                <label for="correo" class="form-label">Correo electrónico *</label>
+                                <label for="correo" class="form-label">Correo electrónico</label>
                                 <input type="email" name="correo" id="correo" class="form-control" required />
                             </div>
                             <div class="mb-3">
-                                <label for="contrasena" class="form-label">Contraseña *</label>
-                                <input type="password" name="contrasena" id="contrasena" class="form-control" required />
+                                <label for="contrasena" class="form-label">Contraseña</label>
+                                <input type="password" name="clave" id="clave" class="form-control" required />
                             </div>
                             <div class="d-grid">
                                 <button type="submit" class="btn text-white" style="background-color: #F37E00;">
@@ -53,8 +51,5 @@ session_start();
     <footer class="fixed-bottom text-center text-black py-3" style="background-color: #F37E00;">
         <p class="mb-0">&copy; 2025 Miblog. Todos los derechos reservados.</p>
     </footer>
-
-
 </body>
-
 </html>
