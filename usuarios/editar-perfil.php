@@ -1,11 +1,16 @@
-<?php session_start();
-include("include/header.php");
-include("bd.php");
-include("include/menu.php");
+<?php
+$titulo = "Edita tú Perfil";
+include("../include/header.php");
+include("../config.php");
+include("../include/menu.php");
 
+
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 
 $id_usuario = $_SESSION['id_usuario'];
-$sql = 'SELECT * FROM usuarios WHERE id_usuario = ? LIMIT 1';
+$sql = 'SELECT * FROM usuarios WHERE id_usuario = ?';
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$id_usuario]);
 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -18,7 +23,8 @@ $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
             <h4 class="text-center mt-3">Edita tu Información</h4>
 
-            <form class="form-control " action="actualizar-perfil.php" method="POST">
+            <form class="form-control " action="actualizar-perfil.php" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']); ?>">
                 <input type="hidden" name="id_usuario" value="<?php echo $usuario['id_usuario']; ?>">
                 <div class="">
                     <label class="form-label mt-3" for="nombre">Nombre</label>
@@ -31,8 +37,8 @@ $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
                 </div>
 
                 <div class="mt-3">
-                    <label class="form-label" for="clave">Contraseña</label>
-                    <input class="form-control" type="password" name="clave" id="clave">
+                    <label class="form-label" for="foto_perfil">Foto de Perfil</label>
+                    <input class="form-control" type="file" name="foto_perfil" id="foto_perfil">
                 </div>
 
                 <div class="mt-3">
@@ -44,4 +50,4 @@ $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
         <div class="col-md-3"></div>
     </div>
 </div>
-<?php include("include/footer.php");?>
+<?php include("../include/footer.php");?>

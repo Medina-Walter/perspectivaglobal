@@ -1,7 +1,16 @@
 <?php
-session_start();
-include("include/header.php"); 
-include("include/menu.php"); 
+$titulo = "Crear Artículo";
+include("../include/header.php"); 
+include("../include/menu.php");
+
+if (!isset($_SESSION['id_usuario'])) {
+    header("Location: ../usuarios/registro.php");
+    exit;
+}
+
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 ?>
 
 <div class="row">
@@ -11,19 +20,10 @@ include("include/menu.php");
         <h4 class="text-center mt-4">Publicar Artículo</h4>
 
         <form class="form-control mt-3" action="guardar-articulo.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']); ?>">
             <div class="">
                 <label class="form-label mt-3" for="titulo">Título</label>
                 <input class="form-control " type="text" name="titulo" id="titulo" required>
-            </div>
-            
-            <div class="">
-                <label class="form-label mt-3" for="titulo">Selecciona una Categoría</label>
-                <select class="form-control" name="categoria" id="categoria">
-                    <option></option>
-                    <option value="economia">Economía</option>
-                    <option value="espectaculo">Espectáculo</option>
-                    <option value="politica">Política</option>
-                </select>
             </div>
 
             <div class="mt-3">

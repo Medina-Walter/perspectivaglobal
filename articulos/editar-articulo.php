@@ -1,8 +1,8 @@
 <?php
-session_start();
-include("include/header.php"); 
-include("include/menu.php");
-include("bd.php");
+$titulo = "Editar Artículo";
+include("../include/header.php"); 
+include("../include/menu.php");
+include("../config.php");
 
 $id_post = $_GET['id_post'] ?? 0;
 
@@ -24,7 +24,7 @@ if (!$post) {
         <h4 class="text-center mt-4">Edita tu Artículo</h4>
 
         <form class="form-control mt-3" action="actualizar-articulo.php" method="POST" enctype="multipart/form-data">
-            
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']); ?>">
             <!-- Campo oculto para enviar el ID del post -->
             <input type="hidden" name="id_post" value="<?php echo $post['id_post']; ?>">
 
@@ -32,16 +32,6 @@ if (!$post) {
                 <label class="form-label mt-3" for="titulo">Título</label>
                 <input class="form-control" type="text" name="titulo" id="titulo" 
                        value="<?php echo htmlspecialchars($post['titulo']); ?>" required>
-            </div>
-            
-            <div>
-                <label class="form-label mt-3" for="categoria">Selecciona una Categoría</label>
-                <select class="form-control" name="categoria" id="categoria">
-                    <option></option>
-                    <option value="economia" <?php if ($post['id_categoria']=='economia') echo 'selected'; ?>>Economía</option>
-                    <option value="espectaculo" <?php if ($post['id_categoria']=='espectaculo') echo 'selected'; ?>>Espectáculo</option>
-                    <option value="politica" <?php if ($post['id_categoria']=='politica') echo 'selected'; ?>>Política</option>
-                </select>
             </div>
 
             <div class="mt-3">

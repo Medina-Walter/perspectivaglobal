@@ -1,0 +1,60 @@
+<?php
+require 'config.php';
+
+$sql = 'SELECT c.id_comentario, c.id_usuario, c.id_post, c.contenido, u.nombre, u.apellido 
+        FROM comentarios c
+        INNER JOIN usuarios u ON c.id_usuario = u.id_usuario';
+$stmt = $pdo->query($sql);
+$comentarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+?>
+
+<?php foreach ($comentarios as $comentario): ?>
+<div class="card mb-2" id="comentario-<?= $comentario['id_comentario']; ?>">
+    <div class="card-body">
+        <strong><?= htmlspecialchars($comentario['nombre'] . " " . $comentario['apellido']); ?></strong>
+
+        <p id="texto-<?= $comentario['id_comentario']; ?>">
+            <?= htmlspecialchars($comentario['contenido']); ?>
+        </p>
+
+        <form method="POST" action="actualizar-comentario.php" 
+            id="form-<?= $comentario['id_comentario']; ?>" style="display:none;">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']); ?>">
+            <input type="hidden" name="id_comentario" value="<?= $comentario['id_comentario']; ?>">
+            <input type="hidden" name="id_post" value="<?= $comentario['id_post']; ?>">
+            <textarea name="contenido" class="form-control"><?= htmlspecialchars($comentario['contenido']); ?></textarea>
+            <button type="submit" class="btn btn-success btn-sm mt-2">Actualizar</button>
+            <button type="button" onclick="cancelarEdicion(<?= $comentario['id_comentario']; ?>)" 
+            class="btn btn-secondary btn-sm mt-2">Cancelar</button>
+        </form>
+
+        <?php if (isset($_SESSION['id_usuario']) && $_SESSION['id_usuario'] == $comentario['id_usuario']): ?> 
+            <div class="d-flex gap-2" id="btn-<?= $comentario['id_comentario']; ?>">
+                <button class="btn btn-warning" onclick="editarComentario(<?= $comentario['id_comentario']; ?>)">Editar</button>
+                <form action="comentarios/eliminar-comentario.php" method="POST">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']); ?>">
+                    <input type="hidden" name="id_comentario" value="<?= $comentario['id_comentario']; ?>">
+                    <input type="hidden" name="id_post" value="<?= $comentario['id_post']; ?>">
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
+<?php endforeach; ?>
+
+<script>
+function editarComentario(id) {
+    document.getElementById('texto-' + id).style.display = 'none';
+    document.getElementById('form-' + id).style.display = 'block';
+    document.getElementById('btn-' + id).style.display = 'none';
+}
+
+function cancelarEdicion(id) {
+    document.getElementById('texto-' + id).style.display = 'block';
+    document.getElementById('form-' + id).style.display = 'none';
+    document.getElementById('btn-' + id).style.display = 'inline-block';
+}
+</script>
+
