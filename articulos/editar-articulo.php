@@ -4,6 +4,11 @@ include("../include/header.php");
 include("../include/menu.php");
 include("../config.php");
 
+if (!isset($_SESSION['id_usuario'])) {
+    header("Location: ../usuarios/registro.php");
+    exit;
+}
+
 $id_post = $_GET['id_post'] ?? 0;
 
 $sql = 'SELECT * FROM posts WHERE id_post = ? AND id_usuario = ? LIMIT 1';
@@ -12,10 +17,16 @@ $stmt->execute([$id_post, $_SESSION['id_usuario']]);
 $post = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$post) {
-    echo "<p class='text-center mt-4 text-danger'>No se encontró el artículo.</p>";
+    echo "<p class='text-center mt-4'>No se encontró el artículo.</p>";
     exit;
 }
+
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 ?>
+
+
 
 <div class="row">
     <div class="col-md-3"></div>

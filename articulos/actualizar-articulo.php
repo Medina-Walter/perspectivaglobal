@@ -24,10 +24,12 @@ $contenido  = $_POST['contenido'] ?? '';
 $imagen = null;
 if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
     $nombreImagen = time() . "_" . basename($_FILES['imagen']['name']);
-    $rutaDestino  = "img/" . $nombreImagen;
-    move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino);
-    $imagen = $nombreImagen;
+    $rutaDestino  = __DIR__ . "/../img/" . $nombreImagen; // ruta absoluta
+    if (move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino)) {
+        $imagen = $nombreImagen; // guardamos solo el nombre en BD
+    }
 }
+
 
 // UPDATE con o sin imagen
 if ($imagen) {

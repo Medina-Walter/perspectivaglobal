@@ -9,6 +9,10 @@ if (!isset($_SESSION['id_usuario'])) {
     exit;
 }
 
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 $id_usuario = $_SESSION['id_usuario'];
 
 // ====================
@@ -104,6 +108,7 @@ $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <a href="../ver-post.php?id=<?= $post['id_post']; ?>" class="btn btn-primary">Leer más</a>
                                 <a class="btn btn-warning" href="../articulos/editar-articulo.php?id_post=<?= $post['id_post']; ?>">Editar</a>
                                 <form action="../articulos/eliminar-articulo.php" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar este artículo?');">
+                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']); ?>">
                                     <input type="hidden" name="id_post" value="<?= $post['id_post']; ?>">
                                     <button type="submit" class="btn btn-danger">Eliminar</button>
                                 </form>

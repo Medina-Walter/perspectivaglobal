@@ -2,9 +2,14 @@
 session_start();
 include("../config.php");
 
+if (!isset($_SESSION['id_usuario'])) {
+    header("Location: ../usuarios/registro.php");
+    exit;
+}
+
 if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
     $_SESSION['error'] = "Solicitud inválida. Recargue la página e intente de nuevo.";
-    header("Location: registro.php");
+    header("Location: ../usuarios/registro.php");
     exit();
 }
 
