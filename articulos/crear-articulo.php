@@ -14,8 +14,8 @@ if (empty($_SESSION['csrf_token'])) {
 ?>
 
 <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
 
         <h4 class="text-center mt-4">Publicar Artículo</h4>
 
@@ -42,5 +42,5 @@ if (empty($_SESSION['csrf_token'])) {
             </div>
         </form>
     </div>
-    <div class="col-md-3"></div>
+    <div class="col-md-1"></div>
 </div>

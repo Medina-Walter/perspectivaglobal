@@ -19,21 +19,21 @@ if (!empty($_POST['nombre']) && !empty($_POST['apellido']) && !empty($_POST['usu
     $correo   = strtolower(trim($_POST['correo']));
     $clave    = $_POST['clave'];
 
-    // ✅ Validación correo
+    // Validación correo
     if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
         $_SESSION['error'] = "El correo no es válido.";
         header("Location: registro.php");
         exit();
     }
 
-    // ✅ Validación contraseña
+    // Validación contraseña
     if (strlen($clave) < 8) {
         $_SESSION['error'] = "La contraseña debe tener al menos 8 caracteres.";
         header("Location: registro.php");
         exit();
     }
 
-    // ✅ Verificar si el usuario ya existe
+    // Verificar si el usuario ya existe
     $sql = "SELECT id_usuario FROM usuarios WHERE usuario = ? LIMIT 1";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$usuario]);
@@ -43,7 +43,7 @@ if (!empty($_POST['nombre']) && !empty($_POST['apellido']) && !empty($_POST['usu
         exit();
     }
 
-    // ✅ Verificar si el correo ya existe
+    // Verificar si el correo ya existe
     $sql = "SELECT id_usuario FROM usuarios WHERE correo = ? LIMIT 1";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$correo]);
@@ -53,7 +53,7 @@ if (!empty($_POST['nombre']) && !empty($_POST['apellido']) && !empty($_POST['usu
         exit();
     }
 
-    // ✅ Si todo está bien, registramos
+    // Si todo está bien, registramos
     $clave_segura = password_hash($clave, PASSWORD_DEFAULT);
     $rol = 'usuario';
 

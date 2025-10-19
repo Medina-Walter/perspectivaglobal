@@ -3,7 +3,7 @@ $config = [
     'host' => 'localhost',
     'user' => 'root',
     'password' => '',
-    'dbname' => 'blog_simple',
+    'dbname' => 'perspectivaglobal',
     'charset' => 'utf8mb4'
 ];
 
