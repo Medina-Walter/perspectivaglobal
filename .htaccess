@@ -1,0 +1,13 @@
+# Activar el motor de reescritura
+RewriteEngine On
+
+# Asegurar que las rutas usen el archivo principal
+RewriteBase /
+
+RewriteRule ^post/([a-zA-Z0-9_-]+)$ ver-post.php?slug=$1 [L,QSA]
+
+# Bloquear acceso directo a carpetas sensibles
+<FilesMatch "(^\.|config\.php|\.sql$)">
+  Order Allow,Deny
+  Deny from all
+</FilesMatch>

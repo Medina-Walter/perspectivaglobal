@@ -1,10 +1,23 @@
 <?php
 require 'config.php';
 
+// Asegurarnos de tener el id del post actual
+if (!isset($post['id_post'])) {
+    echo "Post no encontrado";
+    exit;
+}
+
+$id_post = $post['id_post'];
+
+// Traer solo los comentarios de este post
 $sql = 'SELECT c.id_comentario, c.id_usuario, c.id_post, c.contenido, u.nombre, u.apellido 
         FROM comentarios c
-        INNER JOIN usuarios u ON c.id_usuario = u.id_usuario';
-$stmt = $pdo->query($sql);
+        INNER JOIN usuarios u ON c.id_usuario = u.id_usuario
+        WHERE c.id_post = ?
+        ORDER BY c.id_comentario DESC';
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$id_post]);
 $comentarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -14,6 +27,7 @@ $comentarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 </style>
 
+<!-- Mostrar comentarios -->
 <?php foreach ($comentarios as $comentario): ?>
 <div class="card mb-2" id="comentario-<?= $comentario['id_comentario']; ?>">
     <div class="card-body">
@@ -24,7 +38,7 @@ $comentarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?= htmlspecialchars($comentario['contenido']); ?>
         </p>
 
-        <!-- Formulario de edición (arranca oculto) -->
+        <!-- Formulario de edición (oculto por defecto) -->
         <form method="POST" action="actualizar-comentario.php" 
             id="form-<?= $comentario['id_comentario']; ?>" class="oculto">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']); ?>">
